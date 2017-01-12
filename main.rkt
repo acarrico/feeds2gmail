@@ -20,7 +20,7 @@
   ;; an incoherent cache.rktd might result.
   (define lf (build-path (find-system-path 'home-dir) ".feeds2gmail.LOCK"))
   (when (file-exists? lf)
-    (eprintf "Alredy running (~a exists)\n" lf)
+    (eprintf "Already running (~a exists)\n" lf)
     (exit 1))
   (with-output-to-file lf (curry write "LOCK"))
   ;; Set an exit-handler to remove LOCK file, then call original
