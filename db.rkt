@@ -1,6 +1,7 @@
 #lang rackjure
 
-(require racket/runtime-path)
+(require racket/runtime-path
+         "config.rkt")
 
 (provide load-feeds 
          save-feeds
@@ -25,17 +26,14 @@
 ;; rktd file. But could change this implementation to use mysql,
 ;; Amazon Dynamo, Google Docs, or whatever.
 
-(define feeds-path (build-path (find-system-path 'home-dir)
-                               ".feeds2gmail.cache.rktd"))
-
 (define/contract (load-feeds)
   (-> hash?) ;; (hashof uri string? feed?)
   (with-handlers ([exn:fail? (lambda (_) (hash))])
-    (with-input-from-file feeds-path read)))
+    (with-input-from-file (feeds-path) read)))
 
 (define/contract (save-feeds feeds)
   (hash? . -> . hash?)
-  (with-output-to-file feeds-path #:exists 'replace (curry pretty-write feeds))
+  (with-output-to-file (feeds-path) #:exists 'replace (curry pretty-write feeds))
   feeds)
 
 (struct feed (mailbox mod posts) #:prefab)

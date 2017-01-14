@@ -17,7 +17,7 @@
   ((imap-connection? . -> . any) . -> . any)
   (parameterize ([imap-port-number 993])
     (let-values ([(imc total recent)
-                  (imap-connect "imap.gmail.com" (user) (pwd) "INBOX"
+                  (imap-connect (address) (user) (pwd) "INBOX"
                                 #:tls? #t)])
       (with-handlers ([exn:fail? (lambda (exn)
                                    (displayln exn)

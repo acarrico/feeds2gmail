@@ -18,7 +18,7 @@
   ;; The current db.rkt interface isn't safe for this case. If someone
   ;; .e.g ran us to --add-feed while we were already running --update,
   ;; an incoherent cache.rktd might result.
-  (define lf (build-path (find-system-path 'home-dir) ".feeds2gmail.LOCK"))
+  (define lf (lock-path))
   (when (file-exists? lf)
     (eprintf "Already running (~a exists)\n" lf)
     (exit 1))
