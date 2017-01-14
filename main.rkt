@@ -67,13 +67,17 @@
 (define (--add-feed uri)
   (define f (get-feed uri))
   (when f
-    (define mailbox (~> f fetched-feed-title valid-mailbox-name
-                        (child->full (feeds-mailbox))))
-    (with-gmail-imap (lambda (imap)
-                       ;; 1. Create parent Feeds mailbox
-                       (idempotent-create-mailbox imap (feeds-mailbox))
-                       ;; 2. Create child per-feed mailbox
-                       (idempotent-create-mailbox imap mailbox)))
+    (define mailbox
+      (with-gmail-imap
+        (lambda (imap)
+          (parameterize ([imap-path-delim (imap-get-hierarchy-delimiter imap)])
+            (define mailbox (~> f fetched-feed-title valid-mailbox-name
+                                (child->full (feeds-mailbox))))
+            ;; 1. Create parent Feeds mailbox
+            (idempotent-create-mailbox imap (feeds-mailbox))
+            ;; 2. Create child per-feed mailbox
+            (idempotent-create-mailbox imap mailbox)
+            mailbox))))
     (~> (load-feeds)
         (add-feed uri mailbox)
         save-feeds
