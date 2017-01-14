@@ -36,7 +36,7 @@
   (~> (match name [(pregexp "^\\s*(.+?)\\s*$" (list _ s)) s])
       (regexp-replaces
        `((#px"[^-A-Za-z0-9.,?:'\"()| ]" "")
-         (,(~a "\\" (imap-path-delim)) "")
+         (,(regexp-quote (imap-path-delim)) "")
          (#px"[ ]{2,}" " ")))))
 
 (module+ test
