@@ -11,7 +11,6 @@
 
 ;; Parameters for command-line options
 (define send-email? (make-parameter #t))
-(define feeds-mailbox (make-parameter "Feeds"))
 
 (module+ main
   ;; Use a LOCK file to prevent us from running more than one instance.

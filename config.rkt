@@ -1,12 +1,13 @@
 #lang racket
 
-(provide user pwd address lock-path feeds-path)
+(provide user pwd address lock-path feeds-path feeds-mailbox)
 
 (define user (make-parameter ""))
 (define pwd  (make-parameter ""))
 (define address  (make-parameter ""))
 (define lock-path (make-parameter ""))
 (define feeds-path (make-parameter ""))
+(define feeds-mailbox (make-parameter ""))
 
 (define (getenv/default name default)
   (match (getenv name)
@@ -54,6 +55,7 @@
       [(pregexp "^email\\s*=\\s*(\\S+)\\s*$" (list _ s)) (user s)]
       [(pregexp "^password\\s*=\\s*(\\S+)\\s*$" (list _ s)) (pwd s)]
       [(pregexp "^address\\s*=\\s*(\\S+)\\s*$" (list _ s)) (address s)]
+      [(pregexp "^mailbox\\s*=\\s*(\\S+)\\s*$" (list _ s)) (feeds-mailbox s)]
       [_ (void)])))
 
 (config)
